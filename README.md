@@ -19,11 +19,27 @@ dependencies {
 }
 ```
 
-3.初始化：在Application的OnCreate()中调用：
+3. 在Module的build.gradle中，android下添加dataBinding：
+
+```
+android {
+    ...
+
+    //开启数据绑定
+    dataBinding {
+        enabled = true
+    }
+
+    ...
+```
+
+4.初始化：在Application的OnCreate()中调用：
 
 ```
 Rxzmvvm.init(getApplicationContext());
 ```
+
+
 
 ### 功能说明
 
