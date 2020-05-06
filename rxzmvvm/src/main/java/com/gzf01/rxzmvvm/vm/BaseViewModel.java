@@ -17,8 +17,8 @@ import java.lang.reflect.Modifier;
  */
 public abstract class BaseViewModel<T extends ViewDataBinding,V extends IView> extends ViewModel {
 
-    T binding;
-    V view;
+    protected T binding;
+    protected V view;
 
     @Override
     protected void onCleared() {
