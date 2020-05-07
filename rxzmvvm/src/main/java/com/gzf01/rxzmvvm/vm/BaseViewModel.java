@@ -60,7 +60,7 @@ public abstract class BaseViewModel<T extends ViewDataBinding,V extends IView> e
 
 
 
-    public <K> K getData(String name,Class<T> type){
+    public <K> K getData(String name,Class<K> type){
         if(binding==null || name==null || name.length()<1)
             return null;
         name = Character.toUpperCase(name.charAt(0))+name.substring(1);
