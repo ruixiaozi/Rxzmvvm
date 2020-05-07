@@ -12,12 +12,15 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
 
     buildTypes {
         release {
@@ -32,15 +35,11 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
 
-    implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha03'
-
     //Gson 库
     implementation 'com.google.code.gson:gson:2.8.5'
-
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    testImplementation 'junit:junit:4.13'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation "androidx.annotation:annotation:1.1.0"
+    implementation "androidx.recyclerview:recyclerview:1.1.0"
 
 
 }

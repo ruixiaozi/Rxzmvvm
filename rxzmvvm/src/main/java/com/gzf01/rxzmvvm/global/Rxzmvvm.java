@@ -25,7 +25,7 @@ import java.util.List;
  */
 public class Rxzmvvm {
     private static Context context;
-    private static Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").serializeNulls().create();
+    public static Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").serializeNulls().create();
     //消息窗口对象
     private static Toast toast;
     /**
