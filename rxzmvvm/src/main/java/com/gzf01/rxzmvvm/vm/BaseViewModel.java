@@ -44,7 +44,6 @@ public abstract class BaseViewModel<T extends ViewDataBinding,V extends IView> e
             return;
         try {
             for(Method m:this.binding.getClass().getMethods()){
-                System.out.println(2);
                 Class[] paramTypes = m.getParameterTypes();
                 if(Modifier.isPublic(m.getModifiers()) && paramTypes.length == 1
                         && m.getName().matches("^set.+Init$") ){
