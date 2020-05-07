@@ -7,6 +7,8 @@ import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.gzf01.rxzmvvm.view.adapter.MyRecycleAdapter;
 
 import java.util.List;
@@ -22,6 +24,7 @@ import java.util.List;
  */
 public class Rxzmvvm {
     private static Context context;
+    private static Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").serializeNulls().create();
 
     /**
      * Title: init 方法 <br />

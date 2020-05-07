@@ -1,8 +1,13 @@
 package com.gzf01.rxzmvvm.vm;
 
+import android.content.Intent;
+
+import androidx.annotation.Nullable;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModel;
 
+import com.gzf01.rxzmvvm.entity.Request;
+import com.gzf01.rxzmvvm.entity.Result;
 import com.gzf01.rxzmvvm.view.IView;
 
 import java.lang.reflect.Method;
@@ -56,12 +61,13 @@ public abstract class BaseViewModel<T extends ViewDataBinding,V extends IView> e
 
 
 
-    public <K> K get(Class<K> clazz){
-        if(binding==null)
+    public <K> K getData(String name,Class<T> type){
+        if(binding==null || name==null || name.length()<1)
             return null;
+        name = Character.toUpperCase(name.charAt(0))+name.substring(1);
         try {
             for(Method m:binding.getClass().getMethods()){
-                if (m.getReturnType().equals(clazz)){
+                if (m.getReturnType().equals(type) && m.getName().matches("^get"+name)){
                     return (K)m.invoke(binding);
                 }
             }
@@ -71,13 +77,14 @@ public abstract class BaseViewModel<T extends ViewDataBinding,V extends IView> e
         return null;
     }
 
-    public<K> void set(K k){
-        if (k == null)
+    public<K> void setData(String name,K k){
+        if (k == null || name==null || name.length()<1)
             return;
+        name = Character.toUpperCase(name.charAt(0))+name.substring(1);
         try {
             for(Method m:binding.getClass().getMethods()){
                 Class[] paramTypes = m.getParameterTypes();
-                if (paramTypes.length==1 && paramTypes[0].equals(k.getClass())){
+                if (paramTypes.length==1 && paramTypes[0].equals(k.getClass()) && m.getName().matches("^set"+name)){
 
                     m.invoke(binding,k);
                     return;
@@ -89,12 +96,34 @@ public abstract class BaseViewModel<T extends ViewDataBinding,V extends IView> e
     }
 
     /**
+     * Title: onInit 方法 <br />
+     * Description: 初始化
+     *
+     * @return void
+     */
+    public void onInit(Request request){
+
+    }
+
+
+    /**
      * Title: onShow 方法 <br />
      * Description: 当界面显示的时候
      *
      * @return void
      */
-    public abstract void onShow();
+    public void onShow(){}
+
+
+    /**
+     * Title: onResult 方法 <br />
+     * Description: 当收到返回的时候
+     *
+     * @return void
+     */
+    public void onResult(Result result){
+
+    }
 
 
 }

@@ -12,6 +12,8 @@ import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.gzf01.rxzmvvm.R;
+import com.gzf01.rxzmvvm.entity.Request;
+import com.gzf01.rxzmvvm.entity.Result;
 import com.gzf01.rxzmvvm.global.Rxzmvvm;
 import com.gzf01.rxzmvvm.vm.BaseViewModel;
 
@@ -52,10 +54,28 @@ public abstract class BaseActivityView<T extends BaseViewModel,V extends ViewDat
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        Intent data = getIntent();
+        if(viewModel!=null && data!=null && data.hasExtra("request")){
+            viewModel.onInit((Request) data.getSerializableExtra("request"));
+        }
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         if(viewModel!=null)
             viewModel.onShow();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(viewModel!=null && data!=null && data.hasExtra("result")){
+            viewModel.onResult((Result) data.getSerializableExtra("result"));
+        }
+
     }
 
     @Override
@@ -67,28 +87,32 @@ public abstract class BaseActivityView<T extends BaseViewModel,V extends ViewDat
 
 
     /**
-     * Title: turnToActivity 方法 <br />
-     * Description: 跳转页面方法带返回
+     * Title: turnTo 方法 <br />
+     * Description: 跳转页面方法
      *
      * @return void
      */
-    public <K> void turnToForResult(Activity activity, Class<K> kClass, Serializable data, int code){
+    public <K> void turnTo(Activity activity, Class<K> kClass, Request request){
         Intent intent = new Intent(activity,kClass);
-        intent.putExtra("data",data);
-        activity.startActivityForResult(intent,code);
+        if(request!=null){
+            intent.putExtra("request",request);
+        }
+        activity.startActivityForResult(intent,0);
     }
 
     /**
-     * Title: turnTo 方法 <br />
-     * Description: 跳转页面不需要返回
+     * Title: returnBy 方法 <br />
+     * Description: 返回方法
      *
      * @return void
      */
-    public <K> void turnTo(Activity activity, Class<K> kClass, Serializable data){
-        Intent intent = new Intent(activity,kClass);
-        intent.putExtra("data",data);
-        activity.startActivity(intent);
-        activity.finish();
+    public void returnBy(Result result){
+        if(result != null){
+            Intent intent = new Intent();
+            intent.putExtra("result",result);
+            setResult(RESULT_OK,intent);
+        }
+        finish();
     }
 
     /**
