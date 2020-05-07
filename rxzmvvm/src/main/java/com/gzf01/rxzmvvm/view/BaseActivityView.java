@@ -15,6 +15,7 @@ import com.gzf01.rxzmvvm.R;
 import com.gzf01.rxzmvvm.entity.Request;
 import com.gzf01.rxzmvvm.entity.Result;
 import com.gzf01.rxzmvvm.global.Rxzmvvm;
+import com.gzf01.rxzmvvm.utils.statusBar.StatusBarUtil;
 import com.gzf01.rxzmvvm.vm.BaseViewModel;
 
 import java.io.Serializable;
@@ -32,13 +33,7 @@ public abstract class BaseActivityView<T extends BaseViewModel,V extends ViewDat
 
     //ViewModelProvider的工厂类
     protected ViewModelProvider.Factory factory;
-    //消息窗口对象
-    protected Toast toast;
-    //全局上下文
-    protected Context context;
-
     protected T viewModel;
-
     protected V binding;
 
 
@@ -47,10 +42,18 @@ public abstract class BaseActivityView<T extends BaseViewModel,V extends ViewDat
         super.onCreate(savedInstanceState);
         //设置右入动画
         overridePendingTransition(R.anim.right_in, R.anim.view_stay);
+        //设置状态栏透明
+        StatusBarUtil.setTranslucentStatus(this);
+        //一般的手机的状态栏文字和图标都是白色的, 可如果你的应用也是纯白色的, 或导致状态栏文字看不清
+        //所以如果你是这种情况,请使用以下代码, 设置状态使用深色文字图标风格, 否则你可以选择性注释掉这个if内容
+        if (!StatusBarUtil.setStatusBarDarkTheme(this, true)) {
+            //如果不支持设置深色风格 为了兼容总不能让状态栏白白的看不清, 于是设置一个状态栏颜色为半透明,
+            //这样半透明+白=灰, 状态栏的文字能看得清
+            StatusBarUtil.setStatusBarColor(this,0x55000000);
+        }
         //获取工厂类
         factory = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication());
-        //获取全局上下文
-        context = Rxzmvvm.getContext();
+
     }
 
     @Override
@@ -115,20 +118,5 @@ public abstract class BaseActivityView<T extends BaseViewModel,V extends ViewDat
         finish();
     }
 
-    /**
-     * Title: toastShow 方法 <br />
-     * Description: 优化Toast显示
-     *
-     * @return   void
-     */
-    @Override
-    public void toastShow(String msg){
-        if(toast == null){
-            toast = Toast.makeText(context,msg,Toast.LENGTH_SHORT);
-        }
-        else{
-            toast.setText(msg);
-        }
-        toast.show();
-    }
+
 }

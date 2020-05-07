@@ -9,11 +9,4 @@ package com.gzf01.rxzmvvm.view;
  */
 public interface IView {
 
-    /**
-     * Title: toastShow 方法 <br />
-     * Description: 优化Toast显示
-     *
-     * @return   void
-     */
-     void toastShow(String msg);
 }

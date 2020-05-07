@@ -2,6 +2,7 @@ package com.gzf01.rxzmvvm.global;
 
 import android.content.Context;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -25,7 +26,8 @@ import java.util.List;
 public class Rxzmvvm {
     private static Context context;
     private static Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").serializeNulls().create();
-
+    //消息窗口对象
+    private static Toast toast;
     /**
      * Title: init 方法 <br />
      * Description: 初始化方法
@@ -41,6 +43,22 @@ public class Rxzmvvm {
         return context;
     }
 
+    /**
+     * Title: toastShow 方法 <br />
+     * Description: 优化Toast显示
+     *
+     * @return   void
+     */
+    public static void toastShow(String msg){
+        if(toast == null){
+            toast = Toast.makeText(context,msg,Toast.LENGTH_SHORT);
+        }
+        else{
+            toast.setText(msg);
+        }
+
+        toast.show();
+    }
 
     /**
      * Title: setTextByInt 方法 <br />
