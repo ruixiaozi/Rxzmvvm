@@ -60,8 +60,11 @@ public abstract class BaseActivityView<T extends BaseViewModel,V extends ViewDat
     protected void onStart() {
         super.onStart();
         Intent data = getIntent();
-        if(viewModel!=null && data!=null && data.hasExtra("request")){
-            viewModel.onInit((Request) data.getSerializableExtra("request"));
+        if(viewModel!=null ){
+            if(data!=null && data.hasExtra("request"))
+                viewModel.onInit((Request) data.getSerializableExtra("request"));
+            else
+                viewModel.onInit(null);
         }
     }
 
@@ -95,12 +98,18 @@ public abstract class BaseActivityView<T extends BaseViewModel,V extends ViewDat
      *
      * @return void
      */
-    public <K> void turnTo(Activity activity, Class<K> kClass, Request request){
+    public <K> void turnTo(Activity activity, Class<K> kClass, Request request,boolean isNeedReturn){
         Intent intent = new Intent(activity,kClass);
-        if(request!=null){
-            intent.putExtra("request",request);
+        if(request!=null) {
+            intent.putExtra("request", request);
         }
-        activity.startActivityForResult(intent,0);
+
+        if(isNeedReturn)
+            activity.startActivityForResult(intent,0);
+        else{
+            activity.startActivity(intent);
+            finish();
+        }
     }
 
     /**

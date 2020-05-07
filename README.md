@@ -15,7 +15,7 @@ allprojects {
 
 ```
 dependencies {
-        implementation 'com.github.ruixiaozi:Rxzmvvm:0.0.4'
+        implementation 'com.github.ruixiaozi:Rxzmvvm:0.0.5'
 }
 ```
 
@@ -44,7 +44,7 @@ Rxzmvvm.init(getApplicationContext());
 ### 功能说明
 
 1. 视图基类：BaseActivityView(沉浸式，切换动画)
-    + turnTo(Activity activity, Class<K> kClass, Request request) 跳转页面方法
+    + turnTo(Activity activity, Class<K> kClass, Request request,boolean isNeedReturn) 跳转页面方法
     + returnBy(Result result) 页面返回方法
 2. ViewModel基类：LoginViewModel
     + bind(T binding, V view)  绑定databinding与视图的方法，一般在创建后调用
