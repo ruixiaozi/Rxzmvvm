@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
+import androidx.lifecycle.ViewModel;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -22,11 +23,14 @@ import java.util.List;
 public class MyRecycleAdapter extends RecyclerView.Adapter<MyRecycleAdapter.MyHolder> {
     private List<?> data;
     private int layout_id;
-    private int br_id;
+    private int br_id,br_vm_id;
+    private ViewModel vm;
 
-    public MyRecycleAdapter(int layout_id, int br_id) {
+    public MyRecycleAdapter(ViewModel vm, int layout_id, int br_id,int br_vm_id) {
         this.layout_id = layout_id;
         this.br_id = br_id;
+        this.vm = vm;
+        this.br_vm_id = br_vm_id;
     }
 
     public List<?> getData() {
@@ -61,6 +65,7 @@ public class MyRecycleAdapter extends RecyclerView.Adapter<MyRecycleAdapter.MyHo
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int position) {
         holder.binding.setVariable(br_id,data.get(position));
+        holder.binding.setVariable(br_vm_id,vm);
     }
 
     @Override
