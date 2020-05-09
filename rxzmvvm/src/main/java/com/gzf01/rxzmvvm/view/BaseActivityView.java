@@ -107,6 +107,8 @@ public abstract class BaseActivityView<T extends BaseViewModel,V extends ViewDat
         if(isNeedReturn)
             activity.startActivityForResult(intent,0);
         else{
+            //清理activity栈
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             activity.startActivity(intent);
             finish();
         }
