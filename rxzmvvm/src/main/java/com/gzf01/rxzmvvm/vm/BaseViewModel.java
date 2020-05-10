@@ -1,8 +1,10 @@
 package com.gzf01.rxzmvvm.vm;
 
 import android.content.Intent;
+import android.view.View;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModel;
 
@@ -58,6 +60,29 @@ public abstract class BaseViewModel<T extends ViewDataBinding,V extends IView> e
     }
 
 
+    /**
+     * Title: back 方法 <br />
+     * Description: 返回功能
+     *
+     * @return void
+     */
+    public void back( View v){
+        if(view instanceof AppCompatActivity){
+            AppCompatActivity appCompatActivity = (AppCompatActivity)view;
+            appCompatActivity.onBackPressed();
+        }
+    }
+
+
+    /**
+     * Title: onBack 方法 <br />
+     * Description: 按下返回,false表示执行系统默认的，true拦截系统默认
+     *
+     * @return boolean
+     */
+    public boolean onBack(){
+        return false;
+    }
 
 
     public <K> K getData(String name,Class<K> type){

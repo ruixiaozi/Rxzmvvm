@@ -29,9 +29,7 @@ import java.util.List;
 public class Rxzmvvm {
     private static Context context;
     public static Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").serializeNulls().create();
-    private static List<Activity> activities = new LinkedList<>();
-    public static final int OP_CLEAR = 0;
-    public static final int OP_ADD = 1;
+
     //消息窗口对象
     private static Toast toast;
     /**
@@ -43,26 +41,6 @@ public class Rxzmvvm {
     public static void init(Context context){
         Rxzmvvm.context = context;
     }
-
-    /**
-     * Title: opActivity 方法 <br />
-     * Description:
-     *
-     * @return void
-     */
-    public static synchronized void opActivity(int op,Activity activity){
-        if(op == OP_ADD && activity!=null)
-            activities.add(activity);
-        else if(op == OP_CLEAR){
-            for(Activity a:activities){
-                if(a!=null && !a.isDestroyed()){
-                    activity.finish();
-                }
-            }
-            activities.clear();
-        }
-    }
-
 
 
 
@@ -122,5 +100,16 @@ public class Rxzmvvm {
             list1.addAll(list);
             adapter.notifyDataSetChanged();
         }
+    }
+
+    /**
+     * Title: setBold 方法 <br />
+     * Description: 设置粗体
+     *
+     * @return void
+     */
+    @BindingAdapter(value = {"MyBold"})
+    public static void setBold(TextView tv, boolean isBold){
+        tv.getPaint().setFakeBoldText(isBold);
     }
 }

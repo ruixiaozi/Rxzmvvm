@@ -15,7 +15,7 @@ allprojects {
 
 ```
 dependencies {
-        implementation 'com.github.ruixiaozi:Rxzmvvm:0.0.11'
+        implementation 'com.github.ruixiaozi:Rxzmvvm:0.0.12'
 }
 ```
 
@@ -52,10 +52,16 @@ Rxzmvvm.init(getApplicationContext());
     + setData(String name,K k) 设置视图数据，name为对象变量名，k为数据对象
     + void onInit(Request request) 当视图初始化数据时回调
     + onShow() 当视图显示时回调
+    + boolean onBack() 当点击返回按钮时触发，返回false表示还要执行系统默认动作，返回true表示拦截系统默认动作
+    + back( View v)  触发返回事件的方法，可以调用来打到与返回键一样的效果
     + onResult(Result result) 当视图接收到返回时回调
 3. 集成RecycleView
     + 增加布局属性；`myAdapter` 和 `list`，分别指向一个MyRecycleAdapter对象，和一个List对象，实现自动适配，自动更新
-    + 提供万能Adapter：MyRecycleAdapter
+    + 提供万能Adapter：MyRecycleAdapter(ViewModel vm, int layout_id, int br_id,int br_vm_id)
+    + 其中参数：（vm:该list所在的父视图绑定的ViewModel，layout_id：该list的每一项对应的layout，br_id:每一项视图中与List中的对象对应的变量，br_vm_id：每一项视图中指向父ViewModel的变量）
+4. 优化TextView属性
+    + android:text 属性支持int数值
+    + 增加 MyBold属性，true表示粗体，false表示正常
 4. 屏幕适配：提供dp_xxx和sp_xxx的dimen
 5. 动画：提供基础的进入退出动画
 6. Drawable：按钮
