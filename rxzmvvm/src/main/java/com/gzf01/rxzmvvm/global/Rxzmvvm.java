@@ -1,5 +1,6 @@
 package com.gzf01.rxzmvvm.global;
 
+import android.app.Activity;
 import android.content.Context;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -12,6 +13,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.gzf01.rxzmvvm.view.adapter.MyRecycleAdapter;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -26,6 +29,9 @@ import java.util.List;
 public class Rxzmvvm {
     private static Context context;
     public static Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").serializeNulls().create();
+    private static List<Activity> activities = new LinkedList<>();
+    public static final int OP_CLEAR = 0;
+    public static final int OP_ADD = 1;
     //消息窗口对象
     private static Toast toast;
     /**
@@ -37,6 +43,28 @@ public class Rxzmvvm {
     public static void init(Context context){
         Rxzmvvm.context = context;
     }
+
+    /**
+     * Title: opActivity 方法 <br />
+     * Description:
+     *
+     * @return void
+     */
+    public static synchronized void opActivity(int op,Activity activity){
+        if(op == OP_ADD && activity!=null)
+            activities.add(activity);
+        else if(op == OP_CLEAR){
+            for(Activity a:activities){
+                if(a!=null && !a.isDestroyed()){
+                    activity.finish();
+                }
+            }
+            activities.clear();
+        }
+    }
+
+
+
 
 
     public static Context getContext(){

@@ -40,7 +40,9 @@ public abstract class BaseActivityView<T extends BaseViewModel,V extends ViewDat
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //设置右入动画
+        //添加进栈
+        Rxzmvvm.opActivity(Rxzmvvm.OP_ADD,this);
+        // 设置右入动画
         overridePendingTransition(R.anim.right_in, R.anim.view_stay);
         //设置状态栏透明
         StatusBarUtil.setTranslucentStatus(this);
@@ -108,9 +110,10 @@ public abstract class BaseActivityView<T extends BaseViewModel,V extends ViewDat
             activity.startActivityForResult(intent,0);
         else{
             //清理activity栈
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            Rxzmvvm.opActivity(Rxzmvvm.OP_CLEAR,null);
             activity.startActivity(intent);
-            finish();
+            //finish();
         }
     }
 
