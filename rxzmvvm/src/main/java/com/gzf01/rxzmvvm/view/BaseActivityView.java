@@ -25,6 +25,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -113,7 +114,7 @@ public abstract class BaseActivityView<T extends BaseViewModel,V extends ViewDat
             result.setCode(data.getIntExtra("code",0));
             result.setMessage(data.getStringExtra("msg"));
             Map<String,String> map = Rxzmvvm.gson.fromJson(data.getStringExtra("data"),
-                    TypeToken.getParameterized(Map.class, String.class, String.class).getType());
+                    TypeToken.getParameterized(LinkedHashMap.class, String.class, String.class).getType());
             result.setData(map);
             viewModel.onResult(result);
         }
@@ -138,7 +139,8 @@ public abstract class BaseActivityView<T extends BaseViewModel,V extends ViewDat
         Intent intent = new Intent(activity,kClass);
         if(request!=null) {
             intent.putExtra("code",request.getCode());
-            intent.putExtra("data",Rxzmvvm.gson.toJson(request.getData()));
+            String str = Rxzmvvm.gson.toJson(request.getData());
+            intent.putExtra("data",str);
         }
 
         if(isNeedReturn)
