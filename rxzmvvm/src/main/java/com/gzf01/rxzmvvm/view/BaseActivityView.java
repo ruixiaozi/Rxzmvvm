@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.gson.reflect.TypeToken;
 import com.gzf01.rxzmvvm.R;
 import com.gzf01.rxzmvvm.entity.Request;
 import com.gzf01.rxzmvvm.entity.Result;
@@ -23,6 +24,8 @@ import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Title: BaseActivityView 类 <br/>
@@ -79,8 +82,15 @@ public abstract class BaseActivityView<T extends BaseViewModel,V extends ViewDat
         //初始化
         Intent data = getIntent();
         if(viewModel!=null ){
-            if(data!=null && data.hasExtra("request"))
-                viewModel.onInit((Request) data.getSerializableExtra("request"));
+            if(data!=null && data.hasExtra("code") && data.hasExtra("data"))
+            {
+                Request request = new Request();
+                request.setCode(data.getIntExtra("code",0));
+                Map<String,String> map = Rxzmvvm.gson.fromJson(data.getStringExtra("data"),
+                        TypeToken.getParameterized(Map.class, String.class, String.class).getType());
+                request.setData(map);
+                viewModel.onInit(request);
+            }
             else
                 viewModel.onInit(null);
         }
@@ -98,8 +108,14 @@ public abstract class BaseActivityView<T extends BaseViewModel,V extends ViewDat
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(viewModel!=null && data!=null && data.hasExtra("result")){
-            viewModel.onResult((Result) data.getSerializableExtra("result"));
+        if(viewModel!=null && data!=null && data.hasExtra("code") && data.hasExtra("data")){
+            Result result = new Result();
+            result.setCode(data.getIntExtra("code",0));
+            result.setMessage(data.getStringExtra("msg"));
+            Map<String,String> map = Rxzmvvm.gson.fromJson(data.getStringExtra("data"),
+                    TypeToken.getParameterized(Map.class, String.class, String.class).getType());
+            result.setData(map);
+            viewModel.onResult(result);
         }
 
     }
@@ -121,7 +137,8 @@ public abstract class BaseActivityView<T extends BaseViewModel,V extends ViewDat
     public <K> void turnTo(Activity activity, Class<K> kClass, Request request,boolean isNeedReturn){
         Intent intent = new Intent(activity,kClass);
         if(request!=null) {
-            intent.putExtra("request", request);
+            intent.putExtra("code",request.getCode());
+            intent.putExtra("data",Rxzmvvm.gson.toJson(request.getData()));
         }
 
         if(isNeedReturn)
@@ -142,7 +159,9 @@ public abstract class BaseActivityView<T extends BaseViewModel,V extends ViewDat
     public void returnBy(Result result){
         if(result != null){
             Intent intent = new Intent();
-            intent.putExtra("result",result);
+            intent.putExtra("code",result.getCode());
+            intent.putExtra("msg",result.getMessage());
+            intent.putExtra("data",Rxzmvvm.gson.toJson(result.getData()));
             setResult(RESULT_OK,intent);
         }
         finish();

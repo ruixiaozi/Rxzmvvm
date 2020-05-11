@@ -15,7 +15,7 @@ allprojects {
 
 ```
 dependencies {
-        implementation 'com.github.ruixiaozi:Rxzmvvm:0.0.15'
+        implementation 'com.github.ruixiaozi:Rxzmvvm:0.0.16'
 }
 ```
 
