@@ -55,11 +55,10 @@ public abstract class BaseActivityView<T extends BaseViewModel,V extends ViewDat
         //获取工厂类
         factory = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication());
 
-    }
+        //获取ViewModel
+        viewModel = (T) factory.create(viewModel.getClass());
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+        //初始化
         Intent data = getIntent();
         if(viewModel!=null ){
             if(data!=null && data.hasExtra("request"))
@@ -67,7 +66,9 @@ public abstract class BaseActivityView<T extends BaseViewModel,V extends ViewDat
             else
                 viewModel.onInit(null);
         }
+
     }
+
 
     @Override
     protected void onResume() {
