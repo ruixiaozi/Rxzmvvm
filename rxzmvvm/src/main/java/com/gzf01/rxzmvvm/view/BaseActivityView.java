@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -19,6 +20,8 @@ import com.gzf01.rxzmvvm.utils.statusBar.StatusBarUtil;
 import com.gzf01.rxzmvvm.vm.BaseViewModel;
 
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 
 /**
@@ -38,9 +41,7 @@ public abstract class BaseActivityView<T extends BaseViewModel,V extends ViewDat
     protected V binding;
 
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void init(int layout_id) {
 
         // 设置右入动画
         overridePendingTransition(R.anim.right_in, R.anim.view_stay);
@@ -59,6 +60,21 @@ public abstract class BaseActivityView<T extends BaseViewModel,V extends ViewDat
         //获取ViewModel
         Class <T> entityClass = (Class <T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
         viewModel = (T) factory.create(entityClass);
+
+        //获取数据绑定对象
+        binding = DataBindingUtil.setContentView(this,layout_id);
+
+        //View与ViewModel绑定
+        for(Method m:this.binding.getClass().getMethods()){
+            if(m.getName().matches("^set.+ViewModel$")){
+                try {
+                    m.invoke(binding,viewModel);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        viewModel.bind(binding, this);
 
         //初始化
         Intent data = getIntent();

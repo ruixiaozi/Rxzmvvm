@@ -15,7 +15,7 @@ allprojects {
 
 ```
 dependencies {
-        implementation 'com.github.ruixiaozi:Rxzmvvm:0.0.14'
+        implementation 'com.github.ruixiaozi:Rxzmvvm:0.0.15'
 }
 ```
 
@@ -50,6 +50,7 @@ Rxzmvvm.init(getApplicationContext());
 ### 功能说明
 
 1. 视图基类：BaseActivityView(沉浸式，切换动画)
+    + init(int layout_id) 初始化视图的方法，在子视图的OnCreate方法里调用
     + turnTo(Activity activity, Class<K> kClass, Request request,boolean isNeedReturn) 跳转页面方法
     + returnBy(Result result) 页面返回方法
 2. ViewModel基类：LoginViewModel
