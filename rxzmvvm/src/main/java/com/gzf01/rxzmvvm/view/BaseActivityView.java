@@ -19,6 +19,7 @@ import com.gzf01.rxzmvvm.utils.statusBar.StatusBarUtil;
 import com.gzf01.rxzmvvm.vm.BaseViewModel;
 
 import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
 
 /**
  * Title: BaseActivityView 类 <br/>
@@ -56,7 +57,8 @@ public abstract class BaseActivityView<T extends BaseViewModel,V extends ViewDat
         factory = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication());
 
         //获取ViewModel
-        viewModel = (T) factory.create(viewModel.getClass());
+        Class <T> entityClass = (Class <T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        viewModel = (T) factory.create(entityClass);
 
         //初始化
         Intent data = getIntent();
