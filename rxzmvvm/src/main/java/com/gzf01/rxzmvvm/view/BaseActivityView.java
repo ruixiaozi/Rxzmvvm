@@ -63,7 +63,7 @@ public abstract class BaseActivityView<T extends BaseViewModel,V extends ViewDat
 
         //获取ViewModel
         Class <T> entityClass = (Class <T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-        viewModel = (T) factory.create(entityClass);
+        viewModel = new ViewModelProvider(this,factory).get(entityClass);  //(T) factory.create(entityClass);
 
         //获取数据绑定对象
         binding = DataBindingUtil.setContentView(this,layout_id);

@@ -15,7 +15,7 @@ allprojects {
 
 ```
 dependencies {
-        implementation 'com.github.ruixiaozi:Rxzmvvm:0.0.17'
+        implementation 'com.github.ruixiaozi:Rxzmvvm:0.0.18'
 }
 ```
 
@@ -49,10 +49,14 @@ Rxzmvvm.init(getApplicationContext());
 
 ### 功能说明
 
-1. 视图基类：BaseActivityView(沉浸式，切换动画)
-    + init(int layout_id) 初始化视图的方法，在子视图的OnCreate方法里调用
-    + turnTo(Activity activity, Class<K> kClass, Request request,boolean isNeedReturn) 跳转页面方法
-    + returnBy(Result result) 页面返回方法
+1. 视图基类：
+    1. BaseActivityView(沉浸式，切换动画)
+        + init(int layout_id) 初始化视图的方法，在子视图的OnCreate方法里调用
+        + turnTo(Activity activity, Class<K> kClass, Request request,boolean isNeedReturn) 跳转页面方法
+        + returnBy(Result result) 页面返回方法
+    2. BaseFragmentView 
+        + View init(@NonNull LayoutInflater inflater,@Nullable ViewGroup container,int layout_id) 初始化视图
+        + turnTo(Class<K> kClass, Request request, boolean isNeedReturn) 跳转页面方法
 2. ViewModel基类：LoginViewModel
     + bind(T binding, V view)  绑定databinding与视图的方法，一般在创建后调用
     + getData(String name,Class<T> type) 获取视图数据对象，name为对象变量名称
