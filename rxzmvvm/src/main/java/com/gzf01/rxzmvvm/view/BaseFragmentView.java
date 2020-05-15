@@ -96,6 +96,7 @@ public class BaseFragmentView<T extends BaseViewModel,V extends ViewDataBinding>
         if(isNeedReturn)
             this.startActivityForResult(intent,0);
         else{
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             this.startActivity(intent);
             this.getActivity().finish();
         }
